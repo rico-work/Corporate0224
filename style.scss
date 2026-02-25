@@ -1,0 +1,664 @@
+// --- 変数定義 ---
+$breakpoint: 900px;
+$font-gothic: "Hiragino Kaku Gothic ProN";
+$color-black: #000000;
+$color-white: #ffffff;
+$color-bg: #F0F0F0;
+
+$layout-width-max: 1400px;        // ヘッダー, MV, About, フッター
+$content-width-inner: 1000px;    // News, Business, Company
+
+// --- ベース設定 ---
+body {
+    background-color: $color-bg;
+    color: $color-black;
+    font-family: $font-gothic;
+    margin: 0;
+    overflow-x: hidden; // 横揺れ防止のため追加
+}
+
+// --- 共通レイアウト（1000px幅） ---
+.l-container {
+    max-width: $content-width-inner; 
+    margin-right: auto;
+    margin-left: auto;
+
+    @media (max-width: $breakpoint) {
+        // 共通の padding-right/left: 16px; を削除またはリセット
+        padding-right: 0%; 
+        padding-left: 0%;  
+    }
+}
+
+// --- 1400px幅セクション（MV, About） ---
+.p-mv,
+.p-about {
+    max-width: $layout-width-max;
+    margin: 0 auto;
+    width: 100%;
+    
+    img {
+        width: 100%;
+        height: auto; // これが基本！// 画像の比率を守り、拡大を防ぐ
+        display: block;
+    }
+
+    @media (max-width: $breakpoint) {
+        /* 左右のネガティブマージンとcalc幅を削除 */
+        margin-right: 0; 
+        margin-left: 0;   
+        width: 100%; 
+    }
+}
+
+// MV画像高さ固定（SP）
+.p-mv {
+    @media (max-width: $breakpoint) {
+        img {
+            height: 600px; // 【修正】高さ600px
+            object-fit: cover;
+        }
+    }
+}
+
+
+// --- 共通コンポーネント：セクション見出し ---
+.m-section-title {
+    margin-top: 120px;   
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: $breakpoint) {
+        // --- 【追加】ここに見出し自体の左右余白を設定 ---
+        padding-right: 16px; 
+        padding-left: 16px;
+        // ------------------------------------------
+
+        height: auto; // 【修正】積み木方式のためauto
+
+        .p-mv + .l-container & {
+            margin-top: 80px; // 【修正】MVから見出しまで80px
+        }
+    }
+
+    &__en {
+        color: $color-black;
+        font-family: $font-gothic;
+        font-size: 36px;
+        font-weight: 300;
+        line-height: 36px;
+        letter-spacing: 10.8px;
+        text-transform: uppercase;
+        margin-bottom: 10px;  
+
+        @media (max-width: $breakpoint) {
+            margin-bottom: 10px; // 【修正】英字から日本語まで10px
+        }
+    }
+
+    &__ja {
+        color: $color-black;
+        font-family: $font-gothic;
+        font-size: 14px;
+        font-weight: 300;
+        line-height: normal;
+        margin-bottom: 36px; 
+
+        @media (max-width: $breakpoint) {
+            margin-bottom: 24px; // 【修正】日本語から下の線まで24px
+        }
+    }
+
+    &::after {
+        content: "";
+        display: block;
+        width: 40px;
+        height: 1px;
+        background-color: $color-black;
+        margin-top: auto;   
+    }
+}
+
+// --- ヘッダーコンポーネント ---
+.l-header {
+    width: 100%;
+    height: 80px;
+    background-color: $color-bg;
+
+    @media (max-width: $breakpoint) {
+        height: 80px; // 【修正】高さ80px
+    }
+
+    &__inner {
+        max-width: $layout-width-max;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        height: 100%;
+        padding-left: 100px;
+
+        @media (max-width: $breakpoint) {
+            height: 80px;
+            padding: 16px 16px 15px 16px; 
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+    }
+
+    &__logo {
+        margin-right: 60px;
+        img { width: 100px; height: 25.595px; display: block; }
+
+        @media (max-width: $breakpoint) {
+            margin-right: 0;
+            margin-bottom: 8px; 
+            img { width: 80px; height: 20px; }
+        }
+    }
+
+    &__nav {
+        @media (max-width: $breakpoint) { width: 100%; height: 21px; }
+    }
+
+    &__list {
+        display: flex;
+        gap: 30px; 
+        @media (max-width: $breakpoint) { width: 100%; }
+    }
+
+    &__item {
+        a {
+            text-decoration: none;
+            color: $color-black;
+            font-family: $font-gothic;
+            font-size: 14px;
+            font-weight: 300;
+            line-height: normal;
+
+            @media (max-width: $breakpoint) {
+                display: block;
+                line-height: 1.5; 
+            }
+        }
+    }
+
+    &__cta {
+        margin-left: auto;
+        @media (max-width: $breakpoint) { display: none; }
+    }
+}
+
+// --- お問い合わせボタン（PC） ---
+.m-button-contact {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 80px;
+    background-color: $color-black;
+    color: $color-white;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 300;
+}
+
+// --- フッターコンポーネント ---
+.l-footer {
+    width: 100%;
+    max-width: $layout-width-max; 
+    height: 220px;                                  
+    margin: 0 auto;
+    background-color: $color-white;
+    position: relative;
+
+    &__inner {
+        width: $content-width-inner; // 【修正】変数を使って1000pxに
+        height: 100%;
+        margin: 0 auto;
+        padding: 0 16px;          
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;      
+        justify-content: space-between; 
+    }
+
+    &__logo {
+        img {
+            width: 100px; 
+            height: auto;
+            display: block;
+        }
+    }
+
+    &__info {
+        p {
+            color: $color-black;
+            font-family: $font-gothic;
+            font-size: 14px;      
+            font-style: normal;
+            font-weight: 300;
+            line-height: normal;  
+            margin: 0;
+            text-align: left;    // 【修正】テキスト自体は左寄せ
+        }
+    }
+
+    &__copyright {
+        position: absolute;
+        bottom: 20px;              
+        left: calc((100% - 1032px) / 2 + 16px); 
+        font-size: 10px;
+        line-height: 1;
+        margin: 0;
+        font-weight: 300;
+
+        @media (max-width: 1032px) {
+            left: 16px;
+        }
+    }
+
+    @media (max-width: $breakpoint) {
+        height: auto;
+        padding: 60px 16px 20px;
+
+        &__inner {
+            width: 100%;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 30px;
+        }
+
+        &__info {
+            margin-left: 0; // SP時は左端に戻す
+            text-align: left;    
+        }
+
+        &__copyright {
+            position: static;
+            margin-top: 40px;
+        }
+    }
+}
+
+// --- ニュースセクション ---
+.p-news {
+    .m-section-title {
+        margin-bottom: 60px;
+    }
+    
+    &__list {
+        display: flex;
+        align-items: flex-start;
+        width: 100%;
+        justify-content: flex-start; 
+
+        @media (max-width: $breakpoint) {
+            padding: 0 16px; // 【追加】Newsのコンテンツ部分にも余白を作る
+            flex-direction: column; 
+            margin-top: 44px; // 【修正】線から日付まで44px
+        }
+    }
+
+    &__item {
+        width: 280px; 
+        padding-right: 0; 
+
+        @media (max-width: $breakpoint) {
+            width: 100%; 
+            margin-bottom: 40px; // 【修正】次の日付まで40px
+
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    &__meta {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+
+        @media (max-width: $breakpoint) {
+            margin-bottom: 16px; // 【修正】日付からテキストまで16px
+        }
+    }
+
+    &__date {
+        font-family: $font-gothic;
+        font-weight: 300;
+        font-size: 14px;
+    }
+
+    &__category {
+        margin-left: 15px;
+        display: flex;
+        width: 50px;
+        justify-content: center;
+        align-items: center;
+        background-color: $color-black;
+        color: $color-white;
+        font-family: $font-gothic;
+        font-size: 12px;
+        font-weight: 300;
+        line-height: 20px;
+    }
+
+    &__title {
+        margin: 0;
+        font-family: $font-gothic;
+        font-weight: 300;
+        line-height: 1.5;
+    }
+
+    &__border {
+        width: 1px;
+        height: 81px;
+        background-color: $color-black;
+        flex-shrink: 0;
+        margin-right: 40px;
+        margin-left: 40px;
+
+        @media (max-width: $breakpoint) {
+            display: none; 
+        }
+    }
+}
+
+// --- Aboutセクション ---
+.p-about {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-top: 120px;
+    padding-bottom: 120px; // 【PC反映】
+    width: 100%;
+    align-items: flex-start;
+
+    @media (max-width: $breakpoint) {
+        flex-direction: column; 
+        padding-top: 90px;
+        padding-bottom: 80px; // 【SP反映】
+    }
+
+    &__visual {
+        width: 55%;
+        flex-shrink: 0;
+
+        @media (max-width: $breakpoint) {
+            width: 100%; 
+            overflow: hidden; 
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+    }
+
+    &__content {
+        width: 45%;
+        padding-left: 70px;
+        padding-right: 70px;
+        padding-top: 180px;
+        box-sizing: border-box;
+
+        @media (max-width: $breakpoint) {
+            width: 100%;    
+            padding: 40px 16px 0; 
+        }
+    }
+
+    .m-section-title {
+        margin-top: 0;
+        margin-bottom: 34px; 
+        width: 100%;
+        height: auto;
+
+        @media (max-width: $breakpoint) {
+            margin-left: -16px; 
+        }
+    }
+
+    &__text {
+        margin: 0;
+        font-family: $font-gothic;
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 2.0;
+        color: $color-black;
+        width: 490px;      
+        max-width: 100%;   
+
+        @media (max-width: $breakpoint) {
+            width: 100%;   
+        }
+    } 
+} 
+
+
+// --- Businessセクション ---
+.p-business {
+    .m-section-title {
+        margin-top: 0; // Aboutのpadding-bottomで距離を稼ぐため0に設定
+        margin-bottom: 50px;
+
+        @media (max-width: $breakpoint) {
+            margin-top: 0;
+        }
+    }
+
+    &__list {
+        display: flex;
+        justify-content: center; 
+        padding: 0 102px; 
+        box-sizing: border-box;
+
+        @media (max-width: $breakpoint) {
+            flex-direction: column;
+            padding: 0 16px; 
+            gap: 40px;
+        }
+    }
+
+    &__col {
+        width: 362px; 
+        height: 677px;
+        display: flex;
+        flex-direction: column;
+        
+        &:first-of-type {
+            margin-right: 64px;
+            justify-content: flex-end; 
+        }
+
+        &--right {
+            margin-right: 0;
+            justify-content: flex-start; 
+        }
+
+        @media (max-width: $breakpoint) {
+            width: 100%;
+            height: auto;
+            margin-right: 0;
+        }
+    }
+
+    &__item {
+        width: 100%;
+        &:first-of-type {
+            margin-bottom: 40px; 
+        }
+    }
+
+    &__body {
+        margin-bottom: 10px;
+    }
+
+    &__name {
+        font-size: 14px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        line-height: 1;      
+        margin-bottom: 10px;  
+
+        &::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 0%;
+            border-top: 1px solid $color-black; 
+            background-color: $color-black;
+        }
+    }
+
+    &__image {
+        width: 362px;  
+        height: 232px; 
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            display: block;
+        }
+
+        @media (max-width: $breakpoint) {
+            width: 100%;
+            height: auto;
+        }
+    }
+}
+
+// --- Companyセクション ---
+.p-company {
+    padding-top: 120px;
+    padding-bottom: 120px;
+    background-color: $color-bg;
+
+    @media (max-width: $breakpoint) {
+        padding-top: 80px; 
+        padding-bottom: 0; 
+    }
+
+    &__inner {
+        position: relative;
+        width: 1032px;  
+        height: 622px;  
+        margin: 0 auto;
+
+        @media (max-width: $breakpoint) {
+            width: 100%;
+            height: auto;    
+            padding: 0 16px; 
+            display: flex;
+            flex-direction: column; 
+        }
+    }
+
+    &__box {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 567px;
+        height: 622px;
+        background-color: $color-white;
+        padding: 100px 40px 60px 62px; 
+        box-sizing: border-box;
+        z-index: 1;
+
+        @media (max-width: $breakpoint) {
+            position: static; 
+            width: 100%;      
+            height: auto;     
+            padding: 60px 20px; 
+        }
+
+        .m-section-title {
+            margin-top: 0; 
+            margin-bottom: 50px; 
+
+            @media (max-width: $breakpoint) {
+                margin-left: -20px; 
+            }
+
+            &::after {
+                margin-left: 0; 
+            }
+        }
+    }
+
+    &__info {
+        display: grid;
+        grid-template-columns: 84px 1fr; 
+        column-gap: 20px;
+        row-gap: 12px; 
+
+        @media (max-width: $breakpoint) {
+            display: block; 
+        }
+
+        dt {
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.8;
+
+            @media (max-width: $breakpoint) {
+                margin-bottom: 5px; 
+            }
+        }
+
+        dd {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 300;
+            line-height: 1.8;
+
+            @media (max-width: $breakpoint) {
+                padding-left: 1em;   
+                margin-bottom: 20px; 
+                
+                &:last-of-type {
+                    margin-bottom: 0; 
+                }
+            }
+        }
+    }
+
+    &__image {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 547px;
+        height: 400px;
+        z-index: 2;
+        
+        @media (max-width: $breakpoint) {
+            position: static; 
+            transform: none;  
+            width: 100%;      
+            height: auto;
+            margin-top: 20px; 
+            margin-bottom: 0;
+            line-height: 0;   
+            overflow: hidden;
+
+            img {
+                aspect-ratio: 547 / 400; 
+                vertical-align: bottom; 
+            }
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+    }
+}
